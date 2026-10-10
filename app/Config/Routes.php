@@ -8,6 +8,7 @@ $routes->post('/login', 'Auth::doLogin');
 $routes->get('/logout', 'Auth::logout');
 
 $routes->get('/mahasiswa', 'Mahasiswa::index');
+$routes->get('/mahasiswa/pdf', 'Mahasiswa::pdf');
 $routes->get('/mahasiswa/tambah', 'Mahasiswa::tambah');
 $routes->post('/mahasiswa/simpan', 'Mahasiswa::simpan');
 $routes->get('/mahasiswa/edit/(:num)', 'Mahasiswa::edit/$1');

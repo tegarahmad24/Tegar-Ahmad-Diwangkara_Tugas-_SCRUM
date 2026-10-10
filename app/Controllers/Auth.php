@@ -17,7 +17,7 @@ class Auth extends BaseController
     public function login()
     {
         if (session()->get('is_logged_in')) {
-            return redirect()->to('/mahasiswa');
+            return redirect()->to(site_url());
         }
 
         return view('auth/login');
@@ -46,18 +46,18 @@ class Auth extends BaseController
                 'nama'         => $user['nama'],
             ]);
 
-            return redirect()->to('/mahasiswa');
+            return redirect()->to(site_url());
         }
 
         session()->setFlashdata('error', 'Username atau password salah.');
 
-        return redirect()->to('/login');
+        return redirect()->to(site_url('login'));
     }
 
     public function logout()
     {
         session()->destroy();
 
-        return redirect()->to('/login');
+        return redirect()->to(site_url('login'));
     }
 }

@@ -14,8 +14,8 @@
         h1 { color: #fff; margin-bottom: 25px; text-align: center; }
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 7px; font-weight: bold; color: #fff; }
-        input[type="text"] { width: 100%; padding: 11px; background: #292f40; color: #fff; border: 1px solid #444b5c; border-radius: 7px; font-size: 14px; }
-        input[type="text"]:focus { outline: none; border-color: #00c2ff; }
+        input[type="text"], input[type="file"] { width: 100%; padding: 11px; background: #292f40; color: #fff; border: 1px solid #444b5c; border-radius: 7px; font-size: 14px; }
+        input[type="text"]:focus, input[type="file"]:focus { outline: none; border-color: #00c2ff; }
         .error-text { color: #ff9ca7; font-size: 12px; margin-top: 6px; }
         .tombol-group { margin-top: 25px; display: flex; gap: 10px; }
         .btn-simpan { background: linear-gradient(90deg, #00c2ff, #a86bff); color: #fff; border: none; padding: 10px 18px; border-radius: 7px; font-weight: bold; cursor: pointer; font-size: 14px; }
@@ -33,7 +33,7 @@
     <div class="container">
         <h1>Tambah Data Mahasiswa</h1>
 
-        <form action="<?= site_url('mahasiswa/simpan') ?>" method="post">
+        <form action="<?= site_url('mahasiswa/simpan') ?>" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="nama">Nama</label>
                 <input type="text" id="nama" name="nama" value="<?= old('nama') ?>" required>
@@ -55,6 +55,15 @@
                 <input type="text" id="kelas" name="kelas" value="<?= old('kelas') ?>" required>
                 <?php if (isset($validation) && $validation->hasError('kelas')) : ?>
                     <div class="error-text"><?= esc($validation->getError('kelas')) ?></div>
+                <?php endif; ?>
+            </div>
+
+            <div class="form-group">
+                <label for="foto">Foto Mahasiswa</label>
+                <input type="file" id="foto" name="foto" accept="image/jpeg,image/png,image/webp">
+                <div class="error-text">Format JPG, PNG, atau WebP. Maksimal 2 MB.</div>
+                <?php if (isset($validation) && $validation->hasError('foto')) : ?>
+                    <div class="error-text"><?= esc($validation->getError('foto')) ?></div>
                 <?php endif; ?>
             </div>
 

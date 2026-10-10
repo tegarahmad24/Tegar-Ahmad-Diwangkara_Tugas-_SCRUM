@@ -14,17 +14,27 @@
         .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
         h1 { color: #fff; }
         .btn-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-        .btn-tambah, .btn-home, .btn-edit, .btn-delete, .btn-logout { display: inline-block; text-decoration: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; }
+        .btn-tambah, .btn-home, .btn-pdf, .btn-edit, .btn-delete, .btn-logout { display: inline-block; text-decoration: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; }
         .btn-tambah { background: linear-gradient(90deg, #00c2ff, #a86bff); color: #fff; }
         .btn-home { background: #292f40; color: #fff; border: 1px solid #444b5c; }
+        .btn-pdf { background: #c0392b; color: #fff; }
         .btn-edit { background: #1f8fff; color: #fff; }
         .btn-delete { background: #d93d3d; color: #fff; }
         .btn-logout { background: #3d475b; color: #fff; }
-        .btn-tambah:hover, .btn-home:hover, .btn-edit:hover, .btn-delete:hover, .btn-logout:hover { opacity: 0.9; }
+        .btn-tambah:hover, .btn-home:hover, .btn-pdf:hover, .btn-edit:hover, .btn-delete:hover, .btn-logout:hover { opacity: 0.9; }
+        .search-form { display: flex; gap: 10px; margin-bottom: 25px; }
+        .search-form input { flex: 1; min-width: 0; padding: 11px 14px; border: 1px solid #454d5f; border-radius: 8px; background: #292f40; color: #fff; }
+        .search-form input:focus { outline: none; border-color: #00c2ff; }
+        .btn-search, .btn-reset { display: inline-block; border: 0; padding: 10px 16px; border-radius: 8px; color: #fff; text-decoration: none; font-weight: bold; cursor: pointer; }
+        .btn-search { background: #1f8fff; }
+        .btn-reset { background: #3d475b; }
+        .btn-search:hover, .btn-reset:hover { opacity: 0.9; }
         table { width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.04); }
         table th, table td { border: 1px solid #3a4050; padding: 12px; text-align: left; }
         table th { background: #292f40; color: #fff; }
         table td { color: #b8bdc9; }
+        .foto-mahasiswa { width: 56px; height: 56px; object-fit: cover; border-radius: 7px; border: 1px solid #444b5c; }
+        .foto-kosong { color: #777f91; font-size: 12px; }
         .action-box { display: flex; gap: 8px; flex-wrap: wrap; }
         .kosong { text-align: center; padding: 20px; color: #b8bdc9; }
         .alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; }
@@ -44,9 +54,18 @@
             <h1>Data Mahasiswa</h1>
             <div class="btn-group">
                 <a href="<?= base_url('/') ?>" class="btn-home">&larr; Home</a>
+                <a href="<?= base_url('mahasiswa/pdf' . (!empty($keyword) ? '?q=' . rawurlencode($keyword) : '')) ?>" class="btn-pdf">Cetak PDF</a>
                 <a href="<?= base_url('mahasiswa/tambah') ?>" class="btn-tambah">+ Tambah Data</a>
             </div>
         </div>
+
+        <form action="<?= base_url('mahasiswa') ?>" method="get" class="search-form">
+            <input type="search" name="q" value="<?= esc($keyword ?? '') ?>" placeholder="Cari nama, NIM, atau kelas..." aria-label="Cari data mahasiswa">
+            <button type="submit" class="btn-search">Cari</button>
+            <?php if (!empty($keyword)) : ?>
+                <a href="<?= base_url('mahasiswa') ?>" class="btn-reset">Reset</a>
+            <?php endif; ?>
+        </form>
 
         <?php if (session()->getFlashdata('success')) : ?>
             <div class="alert alert-success"><?= esc(session()->getFlashdata('success')) ?></div>
@@ -57,11 +76,14 @@
         <?php endif; ?>
 
         <?php if (empty($mahasiswa)) : ?>
-            <p class="kosong">Belum ada data mahasiswa.</p>
+            <p class="kosong">
+                <?= !empty($keyword) ? 'Data mahasiswa tidak ditemukan.' : 'Belum ada data mahasiswa.' ?>
+            </p>
         <?php else : ?>
             <table>
                 <tr>
                     <th>No</th>
+                    <th>Foto</th>
                     <th>Nama</th>
                     <th>NIM</th>
                     <th>Kelas</th>
@@ -72,6 +94,13 @@
                 <?php foreach ($mahasiswa as $m) : ?>
                     <tr>
                         <td><?= $no++ ?></td>
+                        <td>
+                            <?php if (!empty($m['foto'])) : ?>
+                                <img src="<?= base_url('uploads/mahasiswa/' . rawurlencode($m['foto'])) ?>" alt="Foto <?= esc($m['nama']) ?>" class="foto-mahasiswa">
+                            <?php else : ?>
+                                <span class="foto-kosong">-</span>
+                            <?php endif; ?>
+                        </td>
                         <td><?= esc($m['nama']) ?></td>
                         <td><?= esc($m['nim']) ?></td>
                         <td><?= esc($m['kelas']) ?></td>

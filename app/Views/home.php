@@ -117,9 +117,10 @@
 
         <div class="hero-top">
 
-            <h1>WEBSITE TEGAR AHMAD</h1>
+            <h1>WELCOME TO MY WEBSITE</h1>
 
             <h2>PENUGASAN MEMBUAT WEBSITE</h2>
+            <h3>OLEH TEGAR AHMAD DIWANGKARA</h3> </br>
 
             <p>
                 Selamat datang di halaman latihan Pemrograman Web Berbasis Framework.
